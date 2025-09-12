@@ -15,7 +15,7 @@ export const Dashboard: React.FC = () => {
   const getSaludo = (): string => {
     const hora = new Date().getHours();
     if (hora < 12) return 'Buenos días';
-    if (hora < 18) return 'Buenas tardes';
+    if (hora < 20) return 'Buenas tardes';
     else
     return 'Buenas noches';
   };

@@ -35,12 +35,12 @@ interface MenuItem {
 export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => {
   const { usuario, logout, hasPermission } = useAuth();
 
-  // Definimos todos los items del menú, con sus permisos si los tienen
+  //  todos los items del menú, con sus permisos si los tienen
   const menuItems: MenuItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: PieChart },
     { id: 'usuarios', label: 'Gestión de Usuarios', icon: Users, requiredResource: 'usuarios', requiredAction: 'gestionar' },
-    { id: 'asientos', label: 'Asientos Contables', icon: FileText, requiredResource: 'asientos', requiredAction: 'ver' },
     { id: 'cuentas', label: 'Plan de Cuentas', icon: BookOpen, requiredResource: 'plan-cuentas', requiredAction: 'ver' },
+    { id: 'asientos', label: 'Asientos Contables', icon: FileText, requiredResource: 'asientos', requiredAction: 'ver' },
     { id: 'diario', label: 'Libro Diario', icon: Calendar, requiredResource: 'libro-diario', requiredAction: 'ver' },
     { id: 'mayor', label: 'Libro Mayor', icon: BookOpen, requiredResource: 'libro-mayor', requiredAction: 'ver' },
     

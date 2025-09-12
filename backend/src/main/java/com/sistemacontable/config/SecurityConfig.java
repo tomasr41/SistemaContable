@@ -5,6 +5,7 @@ import com.sistemacontable.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -20,36 +21,24 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import java.util.List;
 
-/**
- * Configuración de seguridad para Spring Security
- * Define autenticación JWT y autorización basada en roles
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    
+
     @Autowired
     private AuthTokenFilter authTokenFilter;
-    
-    /**
-     * Configuración del encoder de contraseñas (sin encriptar para simplicidad)
-     * @return encoder que no encripta contraseñas
-     */
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return NoOpPasswordEncoder.getInstance(); // solo para simplificar
     }
-    
-    /**
-     * Proveedor de autenticación DAO
-     * @return proveedor configurado con UserDetailsService y PasswordEncoder
-     */
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -57,52 +46,47 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-    
-    /**
-     * Manager de autenticación
-     * @param authConfig configuración de autenticación
-     * @return AuthenticationManager configurado
-     */
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-    
-    /**
-     * Configuración principal de seguridad
-     * @param http HttpSecurity builder
-     * @return SecurityFilterChain configurada
-     */
+
+
+    // PERMISOS PARA CADA ENDPOINT
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/cuentas", "/api/cuentas/**").hasAnyAuthority("PLAN-CUENTAS_VER", "PLAN-CUENTAS_GESTIONAR")
+                .requestMatchers(HttpMethod.POST, "/api/cuentas", "/api/cuentas/**").hasAuthority("PLAN-CUENTAS_GESTIONAR")
+                .requestMatchers(HttpMethod.PATCH, "/api/cuentas/**").hasAuthority("PLAN-CUENTAS_GESTIONAR")
+                .requestMatchers("/api/usuarios/**").hasAuthority("USUARIOS_GESTIONAR")
+                .requestMatchers(HttpMethod.GET, "/api/asientos/**").hasAuthority("ASIENTOS_VER")
+                .requestMatchers(HttpMethod.GET, "/api/libro-diario/**").hasAuthority("LIBRO-DIARIO_VER")
+                .requestMatchers(HttpMethod.GET, "/api/libro-mayor/**").hasAuthority("LIBRO-MAYOR_VER")
                 .anyRequest().authenticated()
-            );
-        
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        
+            )
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())); // usa el bean de CORS
         return http.build();
     }
-    
-    /**
-     * Configuración de CORS para permitir requests del frontend
-     * @return configuración CORS
-     */
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:5173")); // origen del front
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
+

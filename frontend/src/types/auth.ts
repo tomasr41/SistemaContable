@@ -1,5 +1,5 @@
 /**
- * Tipos TypeScript para autenticación y autorización
+ * Tipos TypeScript 
  */
 
 export interface Usuario {
@@ -42,4 +42,21 @@ export interface UsuarioResponse {
 export interface RolDto {
   id: number;
   nombre: string;
+}
+
+
+export interface CuentaDto {
+  id: number;                 
+  nombreCuenta: string;
+  recibeSaldo: boolean;       
+  tipoCuenta: string;     
+  padreId: number | null;     
+  saldoActual: number;      
+}
+
+export interface CuentaRequest {
+  nombreCuenta: string;
+  tipoCuenta: string;
+  recibeSaldo: boolean;
+  padreId: number | null;
 }

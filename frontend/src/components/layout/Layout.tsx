@@ -3,6 +3,8 @@ import { Sidebar } from './Sidebar';
 import { Dashboard } from '../pages/Dashboard';
 import { GestionUsuarios } from '../pages/GestionUsuarios';
 import { PlaceholderSection } from '../pages/PlaceholderSection';
+import PlanCuentas from '../pages/PlanCuentas';
+
 
 /**
  * Layout principal de la aplicación
@@ -16,20 +18,22 @@ export const Layout: React.FC = () => {
    */
   const renderMainContent = () => {
     switch (activeSection) {
+      
       case 'dashboard':
         return <Dashboard />;
+      
       case 'usuarios':
         return <GestionUsuarios />;
-      case 'asientos':
+      
+      case 'cuentas':
+        return <PlanCuentas />;
+
+    case 'asientos':
         return <PlaceholderSection 
           title="Asientos Contables"
          
         />;
-      case 'cuentas':
-        return <PlaceholderSection 
-          title="Plan de Cuentas" 
-          
-        />;
+
       case 'diario':
         return <PlaceholderSection 
           title="Libro Diario" 
