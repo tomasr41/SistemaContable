@@ -139,11 +139,11 @@ export const GestionUsuarios: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center justify-center w-12 h-12 bg-blue-600 rounded-full">
+          <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full shadow-lg">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-100">Gestión de Usuarios</h1>
+            <h1 className="text-2xl font-bold text-gray-100">Gestión de Usuarios</h1>
             <p className="text-gray-400">Administra usuarios y roles del sistema</p>
           </div>
         </div>

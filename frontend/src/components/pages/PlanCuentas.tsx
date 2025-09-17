@@ -108,7 +108,7 @@ const PlanCuentas: React.FC<PlanCuentasProps> = () => {
             <Layers className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-extrabold text-white">
+            <h1 className="text-2xl font-extrabold text-white">
               Plan de Cuentas
             </h1>
             <p className="text-gray-400">Estructura jerárquica de tus cuentas contables</p>

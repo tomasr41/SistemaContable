@@ -35,12 +35,13 @@ const AppContent: React.FC = () => {
  */
 function App() {
   return (
-    <AuthProvider>
+    <AuthProvider>       {/* <-- nuevo */}
       <div className="min-h-screen bg-gray-900 text-gray-100">
         <AppContent />
       </div>
     </AuthProvider>
   );
 }
+
 
 export default App;

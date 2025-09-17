@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar';
 import { Dashboard } from '../pages/Dashboard';
 import { GestionUsuarios } from '../pages/GestionUsuarios';
 import { PlaceholderSection } from '../pages/PlaceholderSection';
+import { Asiento } from '../pages/Asiento';
 import PlanCuentas from '../pages/PlanCuentas';
 
 
@@ -29,10 +30,7 @@ export const Layout: React.FC = () => {
         return <PlanCuentas />;
 
     case 'asientos':
-        return <PlaceholderSection 
-          title="Asientos Contables"
-         
-        />;
+        return <Asiento />;
 
       case 'diario':
         return <PlaceholderSection 
