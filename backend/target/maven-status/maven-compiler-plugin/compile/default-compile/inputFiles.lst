@@ -1,28 +1,38 @@
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Role.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\repository\UsuarioRepository.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\repository\CuentaRepository.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\CuentaRequest.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\service\UsuarioService.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\security\UserPrincipal.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\repository\RoleRepository.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LoginResponse.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Cuenta.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\security\JwtUtils.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\service\CuentaService.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\controller\CuentaController.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\security\AuthTokenFilter.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\service\AuthService.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LoginRequest.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\repository\PermisoRepository.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\controller\AuthController.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\service\UserDetailsServiceImpl.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Usuario.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\PermisoDto.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioResponse.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\controller\UsuarioController.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Permiso.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\RolDto.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioRequest.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\config\SecurityConfig.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\dto\CuentaDto.java
-C:\Users\leona\OneDrive\Escritorio\SistemaContable\backend\src\main\java\com\sistemacontable\SistemaContableApplication.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Permiso.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\AsientoRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\SistemaContableApplication.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LineaAsientoDto.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\PermisoRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LoginResponse.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\security\UserPrincipal.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Role.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\config\SecurityConfig.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Usuario.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\AsientoDto.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\security\AuthTokenFilter.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\RoleRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\security\JwtUtils.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\CuentaRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\service\CuentaService.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\UsuarioRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\CuentaRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\LineaAsientoRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\service\AuthService.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\PermisoDto.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\CuentaDto.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\controller\CuentaController.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\controller\AsientoController.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioResponse.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\controller\AuthController.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LineaAsientoRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\RolDto.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Asiento.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LoginRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\repository\AsientoRepository.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\service\AsientoService.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\controller\UsuarioController.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\LineaAsiento.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Cuenta.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\service\UsuarioService.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\CommitLeoFormularioAsientos\SistemaContable\backend\src\main\java\com\sistemacontable\service\UserDetailsServiceImpl.java

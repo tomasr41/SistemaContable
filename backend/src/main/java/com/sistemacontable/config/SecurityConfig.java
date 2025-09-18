@@ -36,7 +36,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // solo para simplificar
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
@@ -52,34 +52,56 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-
-    // PERMISOS PARA CADA ENDPOINT
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
+                // Auth endpoints siempre públicos
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/cuentas", "/api/cuentas/**").hasAnyAuthority("PLAN-CUENTAS_VER", "PLAN-CUENTAS_GESTIONAR")
-                .requestMatchers(HttpMethod.POST, "/api/cuentas", "/api/cuentas/**").hasAuthority("PLAN-CUENTAS_GESTIONAR")
-                .requestMatchers(HttpMethod.PATCH, "/api/cuentas/**").hasAuthority("PLAN-CUENTAS_GESTIONAR")
-                .requestMatchers("/api/usuarios/**").hasAuthority("USUARIOS_GESTIONAR")
-                .requestMatchers(HttpMethod.GET, "/api/asientos/**").hasAuthority("ASIENTOS_VER")
-                .requestMatchers(HttpMethod.GET, "/api/libro-diario/**").hasAuthority("LIBRO-DIARIO_VER")
-                .requestMatchers(HttpMethod.GET, "/api/libro-mayor/**").hasAuthority("LIBRO-MAYOR_VER")
+
+                // Cuentas
+                .requestMatchers(HttpMethod.GET, "/api/cuentas", "/api/cuentas/**")
+                    .hasAnyAuthority("PLAN-CUENTAS_VER", "PLAN-CUENTAS_GESTIONAR")
+                .requestMatchers(HttpMethod.POST, "/api/cuentas", "/api/cuentas/**")
+                    .hasAuthority("PLAN-CUENTAS_GESTIONAR")
+                .requestMatchers(HttpMethod.PATCH, "/api/cuentas/**")
+                    .hasAuthority("PLAN-CUENTAS_GESTIONAR")
+
+                // Usuarios
+                .requestMatchers("/api/usuarios/**")
+                    .hasAuthority("USUARIOS_GESTIONAR")
+
+                // Asientos
+                .requestMatchers(HttpMethod.GET, "/api/asientos/ultimos")
+                    .hasAuthority("ASIENTOS_VER")
+                .requestMatchers(HttpMethod.POST, "/api/asientos/crear")
+                    .hasAuthority("ASIENTOS_GESTIONAR")
+
+                // Libros contables
+                .requestMatchers(HttpMethod.GET, "/api/libro-diario/**")
+                    .hasAuthority("LIBRO-DIARIO_VER")
+                .requestMatchers(HttpMethod.GET, "/api/libro-mayor/**")
+                    .hasAuthority("LIBRO-MAYOR_VER")
+
+                // Endpoint de errores siempre público
+                .requestMatchers("/error").permitAll()
+
+                // Cualquier otro request requiere autenticación
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())); // usa el bean de CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:5173")); // origen del front
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
@@ -89,4 +111,6 @@ public class SecurityConfig {
         return source;
     }
 }
+
+
 
