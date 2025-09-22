@@ -16,8 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +38,6 @@ public class AsientoService {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    /** Crear un asiento contable con todas sus líneas en una sola transacción */
     @Transactional
     public Asiento crearAsiento(AsientoRequest request) {
         Asiento asiento = new Asiento();
@@ -60,17 +57,17 @@ public class AsientoService {
             BigDecimal debe = lineaRequest.getDebe() != null ? lineaRequest.getDebe() : BigDecimal.ZERO;
             BigDecimal haber = lineaRequest.getHaber() != null ? lineaRequest.getHaber() : BigDecimal.ZERO;
 
-            // Ajustar lógica según tipo de cuenta
+            // Calcular saldo parcial según tipo de cuenta
+            BigDecimal saldoParcial;
             switch (cuenta.getTipoCuenta()) {
                 case "Activo":
-                case "R-":
+                case "R-":      // egresos/gastos
+                    saldoParcial = cuenta.getSaldoActual().add(debe).subtract(haber);
                     break;
                 case "Pasivo":
                 case "Patrimonio":
-                case "R+":
-                    BigDecimal temp = debe;
-                    debe = haber;
-                    haber = temp;
+                case "R+":      // ingresos
+                    saldoParcial = cuenta.getSaldoActual().add(haber).subtract(debe);
                     break;
                 default:
                     throw new IllegalArgumentException("Tipo de cuenta desconocido: " + cuenta.getTipoCuenta());
@@ -81,8 +78,6 @@ public class AsientoService {
             linea.setCuenta(cuenta);
             linea.setDebe(debe);
             linea.setHaber(haber);
-
-            BigDecimal saldoParcial = cuenta.getSaldoActual().add(debe).subtract(haber);
             linea.setSaldoParcial(saldoParcial);
 
             cuenta.setSaldoActual(saldoParcial);
@@ -95,7 +90,6 @@ public class AsientoService {
         return asientoRepository.save(asiento);
     }
 
-    /** Obtener los últimos n asientos con sus líneas */
     @Transactional(readOnly = true)
     public List<AsientoDto> obtenerUltimosAsientos(int n) {
         List<Asiento> asientos = asientoRepository.findAllByOrderByFechaDescIdDesc(PageRequest.of(0, n));
@@ -107,16 +101,15 @@ public class AsientoService {
             dto.setDescripcion(a.getDescripcion());
             dto.setNombreUsuario(a.getUsuario().getNombreUsuario());
 
-            // Mapear líneas de asiento usando la clase externa LineaAsientoDto
-            List<LineaAsientoDto> lineasDto = a.getLineas().stream().map(l -> {
-                return new LineaAsientoDto(
-                        l.getCuenta().getId(),
-                        l.getCuenta().getNombreCuenta(),
-                        l.getDebe(),
-                        l.getHaber(),
-                        l.getSaldoParcial()
-                );
-            }).collect(Collectors.toList());
+            List<LineaAsientoDto> lineasDto = a.getLineas().stream().map(l ->
+                    new LineaAsientoDto(
+                            l.getCuenta().getId(),
+                            l.getCuenta().getNombreCuenta(),
+                            l.getDebe(),
+                            l.getHaber(),
+                            l.getSaldoParcial()
+                    )
+            ).collect(Collectors.toList());
 
             dto.setLineas(lineasDto);
             return dto;
