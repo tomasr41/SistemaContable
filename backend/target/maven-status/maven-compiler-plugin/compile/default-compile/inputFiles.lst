@@ -7,6 +7,7 @@ C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\Siste
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\controller\CuentaController.java
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioResponse.java
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\dto\UsuarioRequest.java
+C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\dto\LibroMayorDto.java
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\repository\CuentaRepository.java
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\entity\Asiento.java
 C:\Users\tomas\OneDrive\Documents\facultad\Sistemas administrativos 2\2209\SistemaContable\backend\src\main\java\com\sistemacontable\repository\RoleRepository.java

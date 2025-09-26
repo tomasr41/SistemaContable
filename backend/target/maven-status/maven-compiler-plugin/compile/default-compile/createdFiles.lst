@@ -11,7 +11,6 @@ com\sistemacontable\controller\AuthController.class
 com\sistemacontable\dto\CuentaDto.class
 com\sistemacontable\dto\AsientoDto.class
 com\sistemacontable\config\SecurityConfig.class
-com\sistemacontable\repository\AsientoRepository.class
 com\sistemacontable\entity\Asiento.class
 com\sistemacontable\service\UserDetailsServiceImpl.class
 com\sistemacontable\dto\CuentaRequest.class
@@ -31,8 +30,6 @@ com\sistemacontable\service\AuthService.class
 com\sistemacontable\controller\CuentaController.class
 com\sistemacontable\repository\CuentaRepository.class
 com\sistemacontable\repository\RoleRepository.class
-com\sistemacontable\controller\AsientoController.class
 com\sistemacontable\dto\LineaAsientoRequest.class
-com\sistemacontable\service\AsientoService.class
 com\sistemacontable\service\UsuarioService.class
 com\sistemacontable\dto\LoginRequest.class

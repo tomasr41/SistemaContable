@@ -5,6 +5,8 @@ import { GestionUsuarios } from '../pages/GestionUsuarios';
 import { PlaceholderSection } from '../pages/PlaceholderSection';
 import { Asiento } from '../pages/Asiento';
 import PlanCuentas from '../pages/PlanCuentas';
+import { LibroDiario } from '../pages/LibroDiario';
+import { LibroMayor } from '../pages/LibroMayor';
 
 
 /**
@@ -33,15 +35,12 @@ export const Layout: React.FC = () => {
         return <Asiento />;
 
       case 'diario':
-        return <PlaceholderSection 
-          title="Libro Diario" 
+        return <LibroDiario 
+          
          
         />;
       case 'mayor':
-        return <PlaceholderSection 
-          title="Libro Mayor" 
-          
-        />;
+        return <LibroMayor />;
       default:
         return <Dashboard />;
     }

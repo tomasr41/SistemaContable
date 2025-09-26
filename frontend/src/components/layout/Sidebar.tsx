@@ -7,7 +7,8 @@ import {
   Calendar, 
   PieChart, 
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Library
 } from 'lucide-react';
 
 /**
@@ -42,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
     { id: 'cuentas', label: 'Plan de Cuentas', icon: BookOpen, requiredResource: 'plan-cuentas', requiredAction: 'ver' },
     { id: 'asientos', label: 'Asientos Contables', icon: FileText, requiredResource: 'asientos', requiredAction: 'ver' },
     { id: 'diario', label: 'Libro Diario', icon: Calendar, requiredResource: 'libro-diario', requiredAction: 'ver' },
-    { id: 'mayor', label: 'Libro Mayor', icon: BookOpen, requiredResource: 'libro-mayor', requiredAction: 'ver' },
+    { id: 'mayor', label: 'Libro Mayor', icon: Library, requiredResource: 'libro-mayor', requiredAction: 'ver' },
     
   ];
 

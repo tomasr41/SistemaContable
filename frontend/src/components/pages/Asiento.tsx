@@ -1,6 +1,6 @@
 // src/pages/Asiento.tsx
 import React, { useState, useEffect, useRef } from "react";
-import { FileText, Zap } from "lucide-react";
+import { FileText } from "lucide-react";
 import { AsientoService } from "../../services/asientoService";
 import { CuentaDto, LineaAsientoRequest, AsientoRequest, AsientoDto } from "../../types/auth";
 
@@ -9,7 +9,6 @@ export const Asiento: React.FC = () => {
   const [mostrarLista, setMostrarLista] = useState(false);
   const contenedorRef = useRef<HTMLDivElement>(null);
 
-  // Estados del formulario
   const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
   const [descripcion, setDescripcion] = useState("");
   const [cuentas, setCuentas] = useState<CuentaDto[]>([]);
@@ -24,18 +23,14 @@ export const Asiento: React.FC = () => {
   const [errorAsiento, setErrorAsiento] = useState<string>("");
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
 
-  // Últimos asientos cargados
   const [ultimosAsientos, setUltimosAsientos] = useState<AsientoDto[]>([]);
 
-  // Limite de descripción
   const limiteDescripcion = 255;
 
-  // Filtrado de cuentas para dropdown
-  const cuentasFiltradas = cuentas.filter(c =>
-    c.nombreCuenta.toLowerCase().includes(cuentaFiltro.toLowerCase())
-  );
+  const cuentasFiltradas = cuentas
+    .filter(c => c.recibeSaldo)
+    .filter(c => c.nombreCuenta.toLowerCase().includes(cuentaFiltro.toLowerCase()));
 
-  // Cerrar dropdown al hacer click fuera
   useEffect(() => {
     const manejarClickFuera = (e: MouseEvent) => {
       if (contenedorRef.current && !contenedorRef.current.contains(e.target as Node)) {
@@ -46,13 +41,11 @@ export const Asiento: React.FC = () => {
     return () => document.removeEventListener("click", manejarClickFuera);
   }, []);
 
-  // Cargar cuentas y últimos asientos al montar
   useEffect(() => {
     const fetchData = async () => {
       try {
         const cuentasBackend = await AsientoService.obtenerCuentas();
         setCuentas(cuentasBackend);
-
         const asientos = await AsientoService.obtenerUltimosAsientos(5);
         setUltimosAsientos(asientos);
       } catch (err) {
@@ -62,7 +55,6 @@ export const Asiento: React.FC = () => {
     fetchData();
   }, []);
 
-  // Función para agregar o actualizar línea
   const agregarLinea = () => {
     if (!cuentaSeleccionada) {
       setErrorMonto("Selecciona una cuenta");
@@ -72,13 +64,11 @@ export const Asiento: React.FC = () => {
       setErrorMonto("El monto debe ser mayor a cero");
       return;
     }
-
     const nuevaLinea: LineaAsientoRequest = {
       cuentaId: cuentaSeleccionada.id,
       debe: tipoMovimiento === "debe" ? monto : 0,
       haber: tipoMovimiento === "haber" ? monto : 0,
     };
-
     if (indiceEditando !== null) {
       const lineasActualizadas = [...lineas];
       lineasActualizadas[indiceEditando] = nuevaLinea;
@@ -87,7 +77,6 @@ export const Asiento: React.FC = () => {
     } else {
       setLineas([...lineas, nuevaLinea]);
     }
-
     setCuentaSeleccionada(null);
     setCuentaFiltro("");
     setMonto(0);
@@ -95,17 +84,14 @@ export const Asiento: React.FC = () => {
     setErrorMonto("");
   };
 
-  // Registrar asiento
   const registrar = async () => {
     if (!descripcion.trim()) {
       setErrorAsiento("La descripción es obligatoria");
       setMostrarMensaje(true);
       return;
     }
-
     const totalDebe = lineas.reduce((acc, l) => acc + (l.debe ?? 0), 0);
     const totalHaber = lineas.reduce((acc, l) => acc + (l.haber ?? 0), 0);
-
     if (totalDebe.toFixed(2) !== totalHaber.toFixed(2)) {
       setErrorAsiento(
         `El total del Debe (${totalDebe.toFixed(2)}) no coincide con el total del Haber (${totalHaber.toFixed(2)})`
@@ -117,35 +103,29 @@ export const Asiento: React.FC = () => {
       }, 4000);
       return;
     }
-
     try {
-    // Recuperar usuarioId desde el objeto 'usuario' en localStorage
-const usuarioStorage = localStorage.getItem("usuario");
-if (!usuarioStorage) {
-  setErrorAsiento("No se encontró el usuario logueado");
-  setMostrarMensaje(true);
-  return;
-}
-
-let usuarioId: number;
-try {
-  const usuarioObj = JSON.parse(usuarioStorage);
-  usuarioId = usuarioObj.id;
-} catch (error) {
-  setErrorAsiento("Error al leer los datos del usuario logueado");
-  setMostrarMensaje(true);
-  return;
-}
-
-const payload: AsientoRequest = {
-  fecha,
-  descripcion,
-  usuarioId,
-  lineas,
-};
+      const usuarioStorage = localStorage.getItem("usuario");
+      if (!usuarioStorage) {
+        setErrorAsiento("No se encontró el usuario logueado");
+        setMostrarMensaje(true);
+        return;
+      }
+      let usuarioId: number;
+      try {
+        const usuarioObj = JSON.parse(usuarioStorage);
+        usuarioId = usuarioObj.id;
+      } catch (error) {
+        setErrorAsiento("Error al leer los datos del usuario logueado");
+        setMostrarMensaje(true);
+        return;
+      }
+      const payload: AsientoRequest = {
+        fecha,
+        descripcion,
+        usuarioId,
+        lineas,
+      };
       const creado = await AsientoService.crearAsiento(payload);
-
-      // Limpiar formulario
       setDescripcion("");
       setLineas([]);
       setCuentaSeleccionada(null);
@@ -219,7 +199,7 @@ const payload: AsientoRequest = {
             />
             {mostrarLista && (
               <ul className="absolute z-10 w-full bg-gray-700 border border-gray-600 rounded mt-1 max-h-40 overflow-y-auto">
-                {cuentasFiltradas.map((c, index) => (
+                {cuentasFiltradas.map(c => (
                   <li
                     key={c.id}
                     className="p-2 cursor-pointer hover:bg-gray-600"
@@ -281,8 +261,9 @@ const payload: AsientoRequest = {
                   tabIndex={0}
                   role="radio"
                   aria-checked={tipoMovimiento === "debe"}
-                  className={`w-[2.5rem] h-[2.5rem] rounded flex items-center justify-center bg-gray-700 
-                    ${tipoMovimiento === "debe" ? "ring-2 ring-gray-800" : ""} focus:ring`}
+                  className={`w-[2.5rem] h-[2.5rem] rounded flex items-center justify-center bg-gray-700 ${
+                    tipoMovimiento === "debe" ? "ring-2 ring-gray-800" : ""
+                  } focus:ring`}
                 >
                   {tipoMovimiento === "debe" && <span className="text-white">✓</span>}
                 </div>
@@ -297,8 +278,9 @@ const payload: AsientoRequest = {
                   tabIndex={0}
                   role="radio"
                   aria-checked={tipoMovimiento === "haber"}
-                  className={`w-[2.5rem] h-[2.5rem] rounded flex items-center justify-center bg-gray-700 
-                    ${tipoMovimiento === "haber" ? "ring-2 ring-gray-800" : ""} focus:ring`}
+                  className={`w-[2.5rem] h-[2.5rem] rounded flex items-center justify-center bg-gray-700 ${
+                    tipoMovimiento === "haber" ? "ring-2 ring-gray-800" : ""
+                  } focus:ring`}
                 >
                   {tipoMovimiento === "haber" && <span className="text-white">✓</span>}
                 </div>
@@ -332,7 +314,7 @@ const payload: AsientoRequest = {
                 const cuentaNombre = cuentas.find(c => c.id === l.cuentaId)?.nombreCuenta ?? "";
                 return (
                   <tr key={idx} className="border-t border-gray-600">
-                    <td className="p-2">{cuentaNombre}</td>
+                    <td className={l.haber && l.haber > 0 ? "p-2 pl-8" : "p-2"}>{cuentaNombre}</td>
                     <td className="p-2 w-[150px] text-right">{l.debe || ""}</td>
                     <td className="p-2 w-[150px] text-right">{l.haber || ""}</td>
                     <td className="p-2 w-[120px] text-center">
@@ -375,8 +357,9 @@ const payload: AsientoRequest = {
           <div className="flex justify-end items-center gap-4 mt-6 relative">
             {errorAsiento && (
               <div
-                className={`absolute right-[10rem] -translate-x-2 mr-2 p-2 bg-red-600 text-white rounded text-sm shadow-lg transition-all duration-500
-                  ${mostrarMensaje ? "opacity-100" : "opacity-0"} z-50`}
+                className={`absolute right-[10rem] -translate-x-2 mr-2 p-2 bg-red-600 text-white rounded text-sm shadow-lg transition-all duration-500 ${
+                  mostrarMensaje ? "opacity-100" : "opacity-0"
+                } z-50`}
               >
                 {errorAsiento}
               </div>
@@ -389,66 +372,73 @@ const payload: AsientoRequest = {
       )}
 
       {/* Últimos asientos */}
-<div className="mt-10">
-  <h2 className="text-2xl font-bold text-white mb-4">Últimos Asientos</h2>
-  {ultimosAsientos.length === 0 ? (
-    <p className="text-gray-500">No hay asientos cargados</p>
-  ) : (
-    <table className="min-w-full border border-gray-600 divide-y divide-gray-600">
-      <thead className="bg-gray-700 text-white">
-        <tr>
-          <th className="px-4 py-2 text-left">Fecha</th>
-          <th className="px-4 py-2 text-left">Descripción</th>
-          <th className="px-4 py-2 text-center">Líneas</th>
-        </tr>
-      </thead>
-      <tbody className="bg-gray-800 divide-y divide-gray-600">
-        {ultimosAsientos.map(asiento => (
-          <React.Fragment key={asiento.id}>
-            <tr className="hover:bg-gray-700">
-              <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
-              <td className="px-4 py-2">{asiento.descripcion}</td>
-              <td
-                className="px-4 py-2 text-center text-blue-400 cursor-pointer hover:underline"
-                onClick={() => {
-                  const fila = document.getElementById(`lineas-${asiento.id}`);
-                  if (fila) fila.classList.toggle("hidden");
-                }}
-              >
-                {asiento.lineas.length} líneas
-              </td>
-            </tr>
-            {/* Subtabla con líneas del asiento */}
-            <tr id={`lineas-${asiento.id}`} className="hidden bg-gray-900">
-              <td colSpan={3} className="p-0">
-                <table className="w-full border-t border-gray-600 text-sm">
-                  <thead className="bg-gray-800 text-white">
-                    <tr>
-                      <th className="px-3 py-1 text-left">Cuenta</th>
-                      <th className="px-3 py-1 text-right">Debe</th>
-                      <th className="px-3 py-1 text-right">Haber</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-gray-800 divide-y divide-gray-600">
-                    {asiento.lineas.map((linea, idx) => (
-                      <tr key={idx} className="hover:bg-gray-700">
-                        <td className="px-3 py-1">{linea.nombreCuenta}</td>
-                        <td className="px-3 py-1 text-right">{linea.debe}</td>
-                        <td className="px-3 py-1 text-right">{linea.haber}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </React.Fragment>
-        ))}
-      </tbody>
-    </table>
-  )}
-</div>
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold text-white mb-4">Últimos Asientos</h2>
+        {ultimosAsientos.length === 0 ? (
+          <p className="text-gray-500">No hay asientos cargados</p>
+        ) : (
+          <table className="min-w-full border border-gray-600 divide-y divide-gray-600">
+            <thead className="bg-gray-700 text-white">
+              <tr>
+                <th className="px-4 py-2 text-left">Fecha</th>
+                <th className="px-4 py-2 text-left">Descripción</th>
+                <th className="px-4 py-2 text-center">Líneas</th>
+              </tr>
+            </thead>
+            <tbody className="bg-gray-800 divide-y divide-gray-600">
+              {ultimosAsientos.map(asiento => (
+                <React.Fragment key={asiento.id}>
+                  <tr className="hover:bg-gray-700">
+                    <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
+                    <td className="px-4 py-2">{asiento.descripcion}</td>
+                    <td
+                      className="px-4 py-2 text-center text-blue-400 cursor-pointer hover:underline"
+                      onClick={() => {
+                        const fila = document.getElementById(`lineas-${asiento.id}`);
+                        if (fila) fila.classList.toggle("hidden");
+                      }}
+                    >
+                      {asiento.lineas.length} líneas
+                    </td>
+                  </tr>
+
+                  {/* Subtabla con líneas del asiento */}
+                  <tr id={`lineas-${asiento.id}`} className="hidden bg-gray-900">
+                    <td colSpan={3} className="p-0">
+                      <table className="w-full border-t border-gray-600 text-sm">
+                        <thead className="bg-gray-800 text-white">
+                          <tr>
+                            <th className="px-3 py-1 text-left">Cuenta</th>
+                            <th className="px-3 py-1 text-right">Debe</th>
+                            <th className="px-3 py-1 text-right">Haber</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-gray-800 divide-y divide-gray-600">
+                          {[...asiento.lineas]
+                            .sort((a, b) => {
+                              if ((a.debe ?? 0) > 0 && (b.debe ?? 0) === 0) return -1;
+                              if ((a.debe ?? 0) === 0 && (b.debe ?? 0) > 0) return 1;
+                              return 0;
+                            })
+                            .map((linea, idx) => (
+                              <tr key={idx} className="hover:bg-gray-700">
+                                <td className={linea.haber && linea.haber > 0 ? "px-3 py-1 pl-8" : "px-3 py-1"}>
+                                  {linea.nombreCuenta}
+                                </td>
+                                <td className="px-3 py-1 text-right">{linea.debe}</td>
+                                <td className="px-3 py-1 text-right">{linea.haber}</td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
-}
-
-
+};

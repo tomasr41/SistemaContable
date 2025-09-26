@@ -78,8 +78,8 @@ const PlanCuentas: React.FC<PlanCuentasProps> = () => {
 
   // Crear nueva cuenta
   const handleCrearCuenta = async () => {
-    if (!formData.nombreCuenta || !formData.tipoCuenta) {
-      alert("⚠️ Nombre y tipo de cuenta son obligatorios");
+    if (!formData.nombreCuenta) {
+      alert("⚠️ Nombre de cuenta es obligatorio");
       return;
     }
 
@@ -187,20 +187,15 @@ const PlanCuentas: React.FC<PlanCuentasProps> = () => {
                 }
                 className="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               />
-              <select
-                value={formData.tipoCuenta}
-                onChange={(e) =>
-                  setFormData({ ...formData, tipoCuenta: e.target.value })
-                }
-                className="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-              >
-                <option value="">Selecciona tipo de cuenta</option>
-                <option value="Activo">Activo</option>
-                <option value="Pasivo">Pasivo</option>
-                <option value="Patrimonio">Patrimonio</option>
-                <option value="R+">R+</option>
-                <option value="R-">R-</option>
-              </select>
+
+              {/* Mostrar tipo de cuenta heredado (readonly) */}
+              <input
+                type="text"
+                placeholder="Tipo de cuenta (heredado del padre)"
+                value={formData.tipoCuenta || ""}
+                readOnly
+                className="w-full px-4 py-2 rounded-xl bg-gray-700 border border-gray-600 text-gray-300"
+              />
 
               <label className="flex items-center space-x-3">
                 <input
@@ -216,12 +211,19 @@ const PlanCuentas: React.FC<PlanCuentasProps> = () => {
 
               <select
                 value={formData.padreId ?? ""}
-                onChange={(e) =>
+                onChange={(e) => {
+                  const padreId = e.target.value ? Number(e.target.value) : null;
+                  let tipoCuenta = "";
+                  if (padreId) {
+                    const padre = cuentas.find((c) => c.id === padreId);
+                    tipoCuenta = padre?.tipoCuenta || "";
+                  }
                   setFormData({
                     ...formData,
-                    padreId: e.target.value ? Number(e.target.value) : null,
-                  })
-                }
+                    padreId: padreId,
+                    tipoCuenta: tipoCuenta,
+                  });
+                }}
                 className="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
               >
                 <option value="">Sin padre</option>
@@ -288,8 +290,8 @@ const CuentaNodo: React.FC<{
 
         <span className="flex-1">{codigoActual} {cuenta.nombreCuenta}</span>
 
-        {/* Botón activar/desactivar */}
-        {usuario?.rol === "ADMIN" && (
+        {/* Botón activar/desactivar solo si recibeSaldo = true */}
+        {usuario?.rol === "ADMIN" && cuenta.recibeSaldo && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -325,6 +327,8 @@ const CuentaNodo: React.FC<{
 };
 
 export default PlanCuentas;
+
+
 
 
 
