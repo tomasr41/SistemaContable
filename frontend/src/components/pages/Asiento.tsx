@@ -28,7 +28,7 @@ export const Asiento: React.FC = () => {
   const limiteDescripcion = 255;
 
   const cuentasFiltradas = cuentas
-    .filter(c => c.recibeSaldo)
+    .filter(c => c.recibeSaldo && c.activo)  // solo muestra cuentas que reciben saldo (imputables) y están activas.
     .filter(c => c.nombreCuenta.toLowerCase().includes(cuentaFiltro.toLowerCase()));
 
   useEffect(() => {
@@ -425,8 +425,13 @@ export const Asiento: React.FC = () => {
                                 <td className={linea.haber && linea.haber > 0 ? "px-3 py-1 pl-8" : "px-3 py-1"}>
                                   {linea.nombreCuenta}
                                 </td>
-                                <td className="px-3 py-1 text-right">{linea.debe}</td>
-                                <td className="px-3 py-1 text-right">{linea.haber}</td>
+                                <td className="px-3 py-1 text-right">
+  {linea.debe && linea.debe !== 0 ? linea.debe : "-"}
+</td>
+<td className="px-3 py-1 text-right">
+  {linea.haber && linea.haber !== 0 ? linea.haber : "-"}
+</td>
+
                               </tr>
                             ))}
                         </tbody>

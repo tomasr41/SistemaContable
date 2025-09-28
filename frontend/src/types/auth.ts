@@ -50,7 +50,8 @@ export interface CuentaDto {
   recibeSaldo: boolean;       
   tipoCuenta: string;     
   padreId: number | null;     
-  saldoActual: number;      
+  saldoActual: number;
+  activo: boolean;
 }
 
 export interface CuentaRequest {

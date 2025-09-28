@@ -52,12 +52,19 @@ public class CuentaService {
     }
 
     /** Actualizar campo activo (ocultar/reactivar) */
-    public void actualizarActivo(Integer id, boolean activo) {
-        Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
-        cuenta.setActivo(activo);
-        cuentaRepository.save(cuenta);
+public void actualizarActivo(Integer id, boolean activo) {
+    Cuenta cuenta = cuentaRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+
+    // Si se intenta deshabilitar la cuenta, verificar que el saldo sea 0
+    if (!activo && cuenta.getSaldoActual().compareTo(BigDecimal.ZERO) != 0) {
+        throw new IllegalArgumentException("No se puede deshabilitar una cuenta con saldo distinto a 0");
     }
+
+    cuenta.setActivo(activo);
+    cuentaRepository.save(cuenta);
+}
+
 
     /** Obtener cuentas válidas como padre (recibeSaldo = false) */
     public List<CuentaDto> obtenerCuentasPadreValidas() {
