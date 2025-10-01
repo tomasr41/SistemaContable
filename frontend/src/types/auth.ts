@@ -118,4 +118,5 @@ export interface LibroMayorDto {
   cuenta: CuentaDto;
   asientos: AsientoLibroMayorDto[];
   saldoActual: number;
+  saldoInicial: number;
 }

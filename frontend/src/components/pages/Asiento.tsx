@@ -9,7 +9,12 @@ export const Asiento: React.FC = () => {
   const [mostrarLista, setMostrarLista] = useState(false);
   const contenedorRef = useRef<HTMLDivElement>(null);
 
-  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
+  const hoy = new Date();
+  const yyyy = hoy.getFullYear();
+  const mm = String(hoy.getMonth() + 1).padStart(2, "0"); // Mes: 0-11
+  const dd = String(hoy.getDate()).padStart(2, "0");
+  const [fecha, setFecha] = useState(`${yyyy}-${mm}-${dd}`);
+
   const [descripcion, setDescripcion] = useState("");
   const [cuentas, setCuentas] = useState<CuentaDto[]>([]);
   const [cuentaFiltro, setCuentaFiltro] = useState("");

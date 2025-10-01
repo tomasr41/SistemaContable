@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FileText } from "lucide-react";
 import { LibroMayorDto, CuentaDto } from "../../types/auth";
 import { LibroMayorService } from "../../services/libroMayorService";
 import { CuentaService } from "../../services/cuentaService";
@@ -113,39 +112,55 @@ export const LibroMayor = () => {
       {error && <p className="text-red-600">{error}</p>}
 
       {/* Tabla de libro mayor */}
-      {libroMayor && (
-        <div className="overflow-x-auto">
-          <h2 className="text-lg font-bold text-white mb-2">
-            Cuenta: {libroMayor.cuenta.nombreCuenta} | Saldo actual: {libroMayor.saldoActual}
-          </h2>
-          <table className="min-w-full border border-gray-600 divide-y divide-gray-600 text-sm">
-            <thead className="bg-gray-700 text-white">
-              <tr>
-                <th className="px-4 py-2 text-left">Fecha</th>
-                <th className="px-4 py-2 text-left">Descripción</th>
-                <th className="px-4 py-2 text-left">Cuenta</th>
-                <th className="px-4 py-2 text-right">Debe</th>
-                <th className="px-4 py-2 text-right">Haber</th>
-                <th className="px-4 py-2 text-right">Saldo Parcial</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-800 divide-y divide-gray-600">
-              {libroMayor.asientos.map((asiento) =>
-                asiento.lineas.map((linea, idx) => (
-                  <tr key={`${asiento.id}-${idx}`} className="hover:bg-gray-700">
-                    <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
-                    <td className="px-4 py-2">{asiento.descripcion}</td>
-                    <td className="px-4 py-2">{linea.nombreCuenta}</td>
-                    <td className="px-4 py-2 text-right">{linea.debe || "-"}</td>
-                    <td className="px-4 py-2 text-right">{linea.haber || "-"}</td>
-                    <td className="px-4 py-2 text-right">{linea.saldoParcial}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+{libroMayor && (
+  <div className="overflow-x-auto">
+    <h2 className="text-lg font-bold text-white mb-2">
+      Cuenta: {libroMayor.cuenta.nombreCuenta} |{" "}
+      Saldo inicial: {libroMayor.saldoInicial?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"} |{" "}
+      Saldo actual: {libroMayor.saldoActual?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
+    </h2>
+    <table className="min-w-full border border-gray-600 divide-y divide-gray-600 text-sm">
+      <thead className="bg-gray-700 text-white">
+        <tr>
+          <th className="px-4 py-2 text-left">Fecha</th>
+          <th className="px-4 py-2 text-left">Descripción</th>
+          <th className="px-4 py-2 text-left">Cuenta</th>
+          <th className="px-4 py-2 text-right">Debe</th>
+          <th className="px-4 py-2 text-right">Haber</th>
+          <th className="px-4 py-2 text-right">Saldo Parcial</th>
+        </tr>
+      </thead>
+      <tbody className="bg-gray-800 divide-y divide-gray-600">
+        {/* Fila de saldo inicial */}
+        <tr className="bg-gray-700 font-bold">
+          <td className="px-4 py-2">-</td>
+          <td className="px-4 py-2">Saldo Inicial</td>
+          <td className="px-4 py-2">{libroMayor.cuenta.nombreCuenta}</td>
+          <td className="px-4 py-2 text-right">-</td>
+          <td className="px-4 py-2 text-right">-</td>
+          <td className="px-4 py-2 text-right">
+            {libroMayor.saldoInicial?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
+          </td>
+        </tr>
+
+        {libroMayor.asientos.map((asiento) =>
+          asiento.lineas.map((linea, idx) => (
+            <tr key={`${asiento.id}-${idx}`} className="hover:bg-gray-700">
+              <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
+              <td className="px-4 py-2">{asiento.descripcion}</td>
+              <td className="px-4 py-2">{linea.nombreCuenta}</td>
+              <td className="px-4 py-2 text-right">{linea.debe && linea.debe !== 0 ? linea.debe.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "-"}</td>
+              <td className="px-4 py-2 text-right">{linea.haber && linea.haber !== 0 ? linea.haber.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "-"}</td>
+              <td className="px-4 py-2 text-right">{linea.saldoParcial?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}</td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+)}
+
+
     </div>
   );
 };

@@ -148,10 +148,13 @@ public LibroMayorDto obtenerLibroMayor(Integer cuentaId, LocalDate desde, LocalD
     Cuenta cuenta = cuentaRepository.findById(cuentaId)
             .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
-    // 2. Traer los asientos con líneas de esa cuenta en el rango de fechas
+    // 2. Calcular saldo inicial (antes de 'desde')
+    BigDecimal saldoInicial = calcularSaldoInicial(cuenta, desde, hasta);
+
+    // 3. Traer los asientos con líneas de esa cuenta en el rango de fechas
     List<Asiento> asientos = asientoRepository.findAsientosByCuentaAndFechas(cuentaId, desde, hasta);
 
-    // 3. Mapear a DTOs
+    // 4. Mapear a DTOs
     List<AsientoDto> asientoDtos = asientos.stream().map(asiento -> {
         AsientoDto dto = new AsientoDto();
         dto.setId(asiento.getId());
@@ -173,7 +176,7 @@ public LibroMayorDto obtenerLibroMayor(Integer cuentaId, LocalDate desde, LocalD
         return dto;
     }).collect(Collectors.toList());
 
-    // 4. Construir el LibroMayorDto
+    // 5. Construir el LibroMayorDto
     LibroMayorDto libroMayor = new LibroMayorDto();
     libroMayor.setCuenta(new CuentaDto(
             cuenta.getId(),
@@ -186,9 +189,44 @@ public LibroMayorDto obtenerLibroMayor(Integer cuentaId, LocalDate desde, LocalD
     ));
     libroMayor.setAsientos(asientoDtos);
     libroMayor.setSaldoActual(cuenta.getSaldoActual());
+    libroMayor.setSaldoInicial(saldoInicial);  // <-- saldo inicial corregido
 
     return libroMayor;
 }
+
+// Método auxiliar para calcular saldo inicial
+private BigDecimal calcularSaldoInicial(Cuenta cuenta, LocalDate desde, LocalDate hasta) {
+    // Traer todos los asientos dentro del rango consultado
+    List<Asiento> posteriores = asientoRepository.findAsientosByCuentaAndFechas(
+            cuenta.getId(),
+            desde,
+            hasta
+    );
+
+    BigDecimal movimientosDesde = BigDecimal.ZERO;
+
+    for (Asiento a : posteriores) {
+        for (LineaAsiento l : a.getLineas()) {
+            if (l.getCuenta().getId().equals(cuenta.getId())) {
+                switch (cuenta.getTipoCuenta()) {
+                    case "Activo":
+                    case "R-":
+                        movimientosDesde = movimientosDesde.add(l.getDebe()).subtract(l.getHaber());
+                        break;
+                    case "Pasivo":
+                    case "Patrimonio":
+                    case "R+":
+                        movimientosDesde = movimientosDesde.add(l.getHaber()).subtract(l.getDebe());
+                        break;
+                }
+            }
+        }
+    }
+
+    // Saldo inicial = saldo actual - movimientos dentro del rango
+    return cuenta.getSaldoActual().subtract(movimientosDesde);
+}
+
 
 }
 
