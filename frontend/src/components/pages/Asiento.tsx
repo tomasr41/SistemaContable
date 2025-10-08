@@ -148,6 +148,12 @@ export const Asiento: React.FC = () => {
     }
   };
 
+const formatLocalDate = (isoDate?: string) => {
+  if (!isoDate) return "";
+  const [y, m, d] = isoDate.split("-");
+  return new Date(Number(y), Number(m) - 1, Number(d)).toLocaleDateString();
+};
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -394,7 +400,7 @@ export const Asiento: React.FC = () => {
               {ultimosAsientos.map(asiento => (
                 <React.Fragment key={asiento.id}>
                   <tr className="hover:bg-gray-700">
-                    <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
+                    <td className="px-4 py-2">{formatLocalDate(asiento.fecha)}</td>
                     <td className="px-4 py-2">{asiento.descripcion}</td>
                     <td
                       className="px-4 py-2 text-center text-blue-400 cursor-pointer hover:underline"
