@@ -49,6 +49,13 @@ export const LibroMayor = () => {
     }
   };
 
+  const formatLocalDate = (isoDate?: string) => {
+  if (!isoDate) return "";
+  const [y, m, d] = isoDate.split("-");
+  return `${d}/${m}/${y}`;
+};
+
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -146,7 +153,7 @@ export const LibroMayor = () => {
         {libroMayor.asientos.map((asiento) =>
           asiento.lineas.map((linea, idx) => (
             <tr key={`${asiento.id}-${idx}`} className="hover:bg-gray-700">
-              <td className="px-4 py-2">{new Date(asiento.fecha).toLocaleDateString()}</td>
+              <td className="px-4 py-2">{formatLocalDate(asiento.fecha)}</td>
               <td className="px-4 py-2">{asiento.descripcion}</td>
               <td className="px-4 py-2">{linea.nombreCuenta}</td>
               <td className="px-4 py-2 text-right">{linea.debe && linea.debe !== 0 ? linea.debe.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "-"}</td>

@@ -29,6 +29,12 @@ export const LibroDiario = () => {
     }
   };
 
+  const formatLocalDate = (isoDate?: string) => {
+  if (!isoDate) return "";
+  const [y, m, d] = isoDate.split("-");
+  return `${d}/${m}/${y}`;
+};
+
   return (
     <div className="p-8">
       {/* Header */}
@@ -92,7 +98,7 @@ export const LibroDiario = () => {
                   {/* Fila con fecha y descripción */}
                   <tr className="bg-gray-700">
                     <td className="px-4 py-2 font-bold border border-gray-600">
-                      {new Date(asiento.fecha).toLocaleDateString()}
+                      {formatLocalDate(asiento.fecha)}
                     </td>
                     <td
                       className="px-4 py-2 font-bold border border-gray-600"
