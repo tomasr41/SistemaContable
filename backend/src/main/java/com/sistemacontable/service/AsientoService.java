@@ -52,6 +52,14 @@ public Asiento crearAsiento(AsientoRequest request) {
             "La fecha del asiento debe estar dentro de los últimos 7 días y no puede ser futura"
         );
     }
+    // Validación de fecha: no anterior al último asiento registrado
+    LocalDate fechaUltimoAsiento = asientoRepository.findUltimaFechaAsiento();
+    if (fechaUltimoAsiento != null && fecha.isBefore(fechaUltimoAsiento)) {
+    throw new IllegalArgumentException(
+        "La fecha del nuevo asiento no puede ser anterior al último asiento registrado (" 
+        + fechaUltimoAsiento + ")"
+    );
+}
 
     asiento.setFecha(fecha);
     asiento.setDescripcion(request.getDescripcion());

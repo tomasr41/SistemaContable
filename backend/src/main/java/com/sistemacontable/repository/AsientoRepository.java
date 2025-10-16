@@ -29,4 +29,8 @@ public interface AsientoRepository extends JpaRepository<Asiento, Integer> {
             @Param("cuentaId") Integer cuentaId,
             @Param("desde") LocalDate desde,
             @Param("hasta") LocalDate hasta);
+
+       // devuelve la fecha del último asiento registrado
+       @Query("SELECT MAX(a.fecha) FROM Asiento a")
+       LocalDate findUltimaFechaAsiento();
 }
